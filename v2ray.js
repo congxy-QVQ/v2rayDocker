@@ -11,6 +11,10 @@ fs.readFile('sebs.js', 'utf8', function (err, data) {
     console.log('-----------------iOS 小火箭二维码------------------')
     console.log(qrcode);
 });
+    qrcode.generate(android(node).toString(), {small: true}, function (qrcode) {
+        console.log('-----------------安卓 v2rayNG二维码------------------')
+        console.log(qrcode);
+});
 });
 function ios(node) {
     !node.method ? node.method = 'chacha20-poly1305' : ''
