@@ -1,7 +1,7 @@
 #!/bin/bash
 # FILE="/etc/Caddy"
 domain="$1"
-psname="$2"
+v2ray_path="$2"
 uuid="51be9a06-299f-43b9-b713-1ec5eb76e3d7"
 if  [ ! "$3" ] ;then
     uuid=$(uuidgen)
@@ -13,7 +13,7 @@ cat > /etc/Caddyfile <<'EOF'
 domain
 {
   log ./caddy.log
-  proxy /one :2333 {
+  proxy /v2ray_path :2333 {
     websocket
     header_upstream -Origin
   }
@@ -21,6 +21,7 @@ domain
 
 EOF
 sed -i "s/domain/${domain}/" /etc/Caddyfile
+sed -i "s/v2ray_path/${v2ray_path}/" /etc/Caddyfile
 
 # v2ray
 cat > /etc/v2ray/config.json <<'EOF'
@@ -40,7 +41,7 @@ cat > /etc/v2ray/config.json <<'EOF'
       "streamSettings": {
         "network": "ws",
         "wsSettings": {
-        "path": "/one"
+        "path": "/v2ray_path"
         }
       }
     }
@@ -56,6 +57,7 @@ cat > /etc/v2ray/config.json <<'EOF'
 EOF
 
 sed -i "s/uuid/${uuid}/" /etc/v2ray/config.json
+sed -i "s/v2ray_path/${v2ray_path}/" /etc/v2ray/config.json
 
 cat > /srv/sebs.js <<'EOF'
  {
@@ -64,22 +66,18 @@ cat > /srv/sebs.js <<'EOF'
     "host":"",
     "id":"uuid",
     "net":"ws",
-    "path":"/one",
+    "path":"/v2ray_path",
     "port":"443",
-    "ps":"sebsclub",
+    "ps":"V2RAY_WS",
     "tls":"tls",
     "type":"none",
     "v":"2"
   }
 EOF
 
-if [ "$psname" != "" ] && [ "$psname" != "-c" ]; then
-  sed -i "s/sebsclub/${psname}/" /srv/sebs.js
-  sed -i "s/domain/${domain}/" /srv/sebs.js
-  sed -i "s/uuid/${uuid}/" /srv/sebs.js
-else
-  $*
-fi
+sed -i "s/domain/${domain}/" /srv/sebs.js
+sed -i "s/uuid/${uuid}/" /srv/sebs.js
+sed -i "s/v2ray_path/${v2ray_path}/" /srv/sebs.js
 pwd
 cp /etc/Caddyfile .
 nohup /bin/parent caddy  --log stdout --agree=false &
