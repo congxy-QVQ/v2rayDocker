@@ -62,7 +62,7 @@ sed -i "s/v2ray_path/${v2ray_path}/" /etc/v2ray/config.json
 cat > /srv/sebs.js <<'EOF'
  {
     "add":"domain",
-    "aid":"0",
+    "aid":"64",
     "host":"",
     "id":"uuid",
     "net":"ws",
