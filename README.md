@@ -47,7 +47,8 @@ sudo docker stop v2ray
 ## ipv6 支持
 
 * 由于docker默认网络只支持ipv4，所以即使VPS有ipv6地址也无法通过v2rayDocker访问ipv6网站，但是我们可以使用 <https://github.com/robbertkl/docker-ipv6nat> 为 Docker 提供 IPv6 NAT 功能。
-* 首先，编辑 /etc/docker/daemon.json 文件，加入以下内容：
+
+* 编辑 /etc/docker/daemon.json 文件，加入以下内容：
 
 ```json
 {
@@ -56,7 +57,13 @@ sudo docker stop v2ray
 }
 ```
 
-* 然后，启动镜像
+* 重启docker服务:
+
+```bash
+sudo systemctl restart docker.service
+```
+
+* 启动镜像:
 
 ```bash
 docker run -d --restart=always -v /var/run/docker.sock:/var/run/docker.sock:ro --privileged --net=host robbertkl/ipv6nat
